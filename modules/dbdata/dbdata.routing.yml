@@ -1,0 +1,10 @@
+dbmodule.form:
+  path: '/dbdata'
+  defaults:
+    _controller: '\Drupal\dbdata\Controller\dbdataController::content'
+    _title: 'this is the data i want'
+
+  requirements:
+    _permission: 'access content'
+
+

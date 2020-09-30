@@ -1,0 +1,13 @@
+name: 'Webform remote handler post test'
+type: module
+description: 'Support module for Webform module remote handler post testing.'
+package: Testing
+core: 8.x
+dependencies:
+  - webform:webform
+  - webform_remote_handlers:webform_remote_handlers
+
+# Information added by Drupal.org packaging script on 2020-09-14
+version: '8.x-1.6'
+project: 'webform_remote_handlers'
+datestamp: 1600074112

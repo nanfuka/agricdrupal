@@ -1,0 +1,16 @@
+name: Webform
+type: module
+description: 'Enables the creation of webforms and questionnaires.'
+package: Webform
+core_version_requirement: ^8.8 || ^9
+configure: entity.webform.collection
+dependencies:
+  - 'drupal:field'
+  - 'drupal:user'
+  - 'jquery_ui_tabs:jquery_ui_tabs'
+  - 'jquery_ui_tooltip:jquery_ui_tooltip'
+
+# Information added by Drupal.org packaging script on 2020-09-11
+version: '6.0.0-alpha16'
+project: 'webform'
+datestamp: 1599851834

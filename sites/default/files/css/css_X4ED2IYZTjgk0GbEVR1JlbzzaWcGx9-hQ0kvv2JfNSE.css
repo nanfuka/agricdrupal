@@ -1,0 +1,2 @@
+.tableselect th:first-child,.tableselect td:first-child{width:1%;}
+.tableselect-sort th:first-child,.tableselect-sort td:first-child{width:40px;white-space:nowrap;}

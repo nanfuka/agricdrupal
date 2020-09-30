@@ -1,0 +1,49 @@
+webform.handler.rest_handler:
+  type: mapping
+  label: 'Rest handler'
+  mapping:
+    method:
+      label: Method
+      type: text
+    debug:
+      label: Debug
+      type: boolean
+    endpoint:
+      label: Endpoint
+      type: text
+    endpoint_oauth_token:
+      label: 'Endpoint oauth token'
+      type: text
+    username:
+      label: Username
+      type: text
+    password:
+      label: Password
+      type: text
+    auth_type:
+      label: 'Auth type'
+      type: text
+    request:
+      label: Request
+      type: text
+    response:
+      label: Response
+      type: text
+    message:
+      label: Message
+      type: text
+    purging:
+      label: Purging
+      type: boolean
+    base64encode:
+      label: Base64encode
+      type: boolean
+    base64string:
+      label: Base64string
+      type: text
+    base64response:
+      label: Base64response
+      type: text
+    enablesslverification:
+      label: 'SSL verification'
+      type: boolean

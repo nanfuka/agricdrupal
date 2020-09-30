@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * Implement webform remote handlers hook functions.
+ */
+
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\file\Entity\File;
+use Drupal\webform\WebformSubmissionInterface;
+
+/**
+ * Implements hook_token_info().
+ */
+function webform_remote_handlers_token_info() {
+  $webform_submission['files'] = [
+    'name' => t('Submission value files'),
+    'description' => 'Files contents encoded in base64',
+    'dynamic' => TRUE,
+  ];
+  return [
+    'tokens' => ['webform_submission' => $webform_submission],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function webform_remote_handlers_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type !== 'webform_submission' || empty($data['webform_submission'])) {
+    return $replacements;
+  }
+
+  if ($value_tokens = \Drupal::token()->findWithPrefix($tokens, 'files')) {
+    foreach ($value_tokens as $value_token => $original) {
+      $value = _webform_token_get_submission_value_files($value_token, $data['webform_submission']);
+      if (!empty($value)) {
+        $replacements[$original] = $value;
+      }
+    }
+  }
+
+  return $replacements;
+}
+
+/**
+ * Get webform submission element files decoded in base64.
+ *
+ * @param string $value_token
+ *   Webform submission token.
+ * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+ *   Webform submission object.
+ *
+ * @return string
+ *   Files contents imploded by a specific splitter.
+ */
+function _webform_token_get_submission_value_files($value_token, WebformSubmissionInterface $webform_submission) {
+  $keys = explode(':', $value_token);
+  $element_key = $keys[0];
+  $element_format = count($keys) > 1 ? $keys[1] : ',';
+  $submission_data = $webform_submission->getData();
+
+  if (!is_array($submission_data) || !array_key_exists($element_key, $submission_data)) {
+    return '';
+  }
+
+  $file_ids = $submission_data[$element_key];
+  $files = [];
+  if (empty($file_ids)) {
+    return '';
+  }
+  elseif (is_array($file_ids)) {
+    foreach ($file_ids as $fid) {
+      $files[] = _webform_remote_handlers_get_file_data($fid);
+    }
+  }
+  else {
+    $files[] = _webform_remote_handlers_get_file_data($file_ids);
+  }
+  return _webform_remote_handlers_get_files_data_formatted($files, $element_format);
+}
+
+/**
+ * Get file contents decoded in base64.
+ *
+ * @param int $fid
+ *   File id.
+ *
+ * @return string
+ *   File contents decoded in base64.
+ */
+function _webform_remote_handlers_get_file_data($fid) {
+  $file = File::load($fid);
+
+  if (!$file) {
+    return '';
+  }
+
+  $result = file_get_contents($file->getFileUri());
+  $result = base64_encode($result);
+  return $result;
+}
+
+/**
+ * Implode files contents related to a webform submission element.
+ *
+ * @param array $files
+ *   Files contents.
+ * @param string $split
+ *   Splitter used to implode several files contents.
+ *
+ * @return string
+ *   Files contents imploded by a specific splitter.
+ */
+function _webform_remote_handlers_get_files_data_formatted(array $files, $split = ',') {
+  if (empty($files)) {
+    return '';
+  }
+
+  if (count($files) == 1) {
+    return reset($files);
+  }
+
+  return implode($split, $files);
+}
+
+/**
+ * A callback function that will be used to post-process token replacements.
+ *
+ * @param mixed $replacements
+ *   Token replacements.
+ * @param mixed $data
+ *   Token data.
+ * @param mixed $options
+ *   Token options.
+ * @param \Drupal\Core\Render\BubbleableMetadata|null $bubbleable_metadata
+ *   Processed tokens.
+ */
+function _webform_remote_handlers_token_cleaner(&$replacements, &$data, &$options, &$bubbleable_metadata) {
+  // Escape the tokens, unless they are explicitly markup.
+  foreach ($replacements as $token => $value) {
+    if (strpos($token, ':files:') === FALSE) {
+      $replacements[$token] = addslashes($value);
+    }
+  }
+}

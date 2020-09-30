@@ -1,0 +1,7 @@
+name: 'tries'
+type: module
+description: 'I am going tosdfsdfs uhse this module to collect data from the database'
+core: 8.x
+dependencies:
+  - 'webform:webform'
+

@@ -1,0 +1,7 @@
+tries.content:
+  path: '/hellos'
+  defaults:
+    _controller: '\Drupal\tries\Controller\triesController::content'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'

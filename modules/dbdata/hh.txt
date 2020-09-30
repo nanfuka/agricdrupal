@@ -1,0 +1,187 @@
+<?php
+
+use Drupal\webform\Entity\WebformOptions;
+use Drupal\Core\Serialization\Yaml;
+
+
+
+
+
+function dbdata_webform_options_alter(array &$options, array &$element, $options_id = NULL)
+{
+    if ($options_id == 'yearss') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'years', '=');
+        $executed = $select->execute();
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+        $a = array();
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('yearss');
+        $options = $webform_test_options->getOptions();
+
+        /* Update predefind options --- */
+
+        $webform_test_options->set('options', Yaml::encode($data));
+        /* $data will be array ["AF"=>"Afghanistan","AL"=>"Albania",....,"US"=>"United States",..]*/
+        $webform_test_options->save();
+    } elseif ($options_id == 'training_type') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'training_types', '=');
+
+
+        $executed = $select->execute();
+        // Get all the results.
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $a = array();
+
+
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('training_type');
+        $options = $webform_test_options->getOptions();
+
+        /* Update predefind options --- */
+
+        $webform_test_options->set('options', Yaml::encode($data));
+        /* $data will be array ["AF"=>"Afghanistan","AL"=>"Albania",....,"US"=>"United States",..]*/
+        $webform_test_options->save();
+    } elseif ($options_id == 'component') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'components', '=')
+            ->condition('wsd.name', 'component_name', '=');
+
+
+        $executed = $select->execute();
+        // Get all the results.
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $a = array();
+
+
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('component');
+        $options = $webform_test_options->getOptions();
+
+        /* Update predefind options --- */
+
+        $webform_test_options->set('options', Yaml::encode($data));
+        /* $data will be array ["AF"=>"Afghanistan","AL"=>"Albania",....,"US"=>"United States",..]*/
+        $webform_test_options->save();
+    } elseif ($options_id == 'country') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'countries', '=');
+
+
+        $executed = $select->execute();
+        // Get all the results.
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $a = array();
+
+
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('country');
+        $options = $webform_test_options->getOptions();
+        $webform_test_options->set('options', Yaml::encode($data));
+        $webform_test_options->save();
+    } elseif ($options_id == 'contact_person') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'contacts', '=')
+            ->condition('wsd.name', 'name', '=')
+            ->condition('wsd.property', 'last', '=');
+
+
+        $executed = $select->execute();
+        // Get all the results.
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $a = array();
+
+
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('contact_person');
+        $options = $webform_test_options->getOptions();
+
+        /* Update predefind options --- */
+
+        $webform_test_options->set('options', Yaml::encode($data));
+        /* $data will be array ["AF"=>"Afghanistan","AL"=>"Albania",....,"US"=>"United States",..]*/
+        $webform_test_options->save();
+    } elseif ($options_id == 'partner_type') {
+
+        $database = \Drupal::service('database');
+        $select = $database->select('webform_submission_data', 'wsd')
+            ->fields('wsd', array('value'))
+            ->condition('wsd.webform_id', 'partner_types', '=');
+
+
+        $executed = $select->execute();
+        // Get all the results.
+        $results = $executed->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        $a = array();
+
+
+        foreach ($results as $k => $v) {
+            array_push($a, $v);
+        }
+
+        $data = $a;
+        // **ID of option = country_code or gender** 
+        $webform_test_options = WebformOptions::load('partner_type');
+        $options = $webform_test_options->getOptions();
+
+        /* Update predefind options --- */
+
+        $webform_test_options->set('options', Yaml::encode($data));
+        /* $data will be array ["AF"=>"Afghanistan","AL"=>"Albania",....,"US"=>"United States",..]*/
+        $webform_test_options->save();
+    }
+}
