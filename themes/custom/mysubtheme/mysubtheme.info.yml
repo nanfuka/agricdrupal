@@ -6,4 +6,6 @@ core: 8.x
 libraries:
   - danland/global
   - mysubtheme/bootstrap
+  - mysubtheme/global-styling
+
 

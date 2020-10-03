@@ -19,6 +19,19 @@ bootstrap_cdn:
     component:
      //stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css: {}
 
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      css/layout.css: {}
+      css/style.css: {}
+      css/colors.css: {}
+global-scripts:
+  version: 1.x
+  js: 
+    js/navmenu.js: {}   
+
+
 
 
 
